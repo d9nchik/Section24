@@ -96,14 +96,16 @@ class MyArrayListTest {
 
     @org.junit.jupiter.api.Test
     void iterator() {
-        emptyArrayList.addAll(Arrays.asList(1, 2));
-        Iterator<Integer> iterator = emptyArrayList.iterator();
+        fullArrayList.clear();
+        fullArrayList.addAll(Arrays.asList(1, 2));
+        Iterator<Integer> iterator = fullArrayList.iterator();
         assertTrue(iterator.hasNext());
         assertEquals(1, iterator.next());
         iterator.remove();
-        assertEquals(1, emptyArrayList.size());
+        assertEquals(1, fullArrayList.size());
         assertTrue(iterator.hasNext());
         assertEquals(2, iterator.next());
+        assertFalse(iterator.hasNext());
         assertThrows(NoSuchElementException.class, iterator::next);
     }
 

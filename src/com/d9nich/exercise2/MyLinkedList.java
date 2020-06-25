@@ -1,8 +1,10 @@
 package com.d9nich.exercise2;
 
 import com.d9nich.exercise1.MyList;
+import com.d9nich.exercise15.MyArrayList;
 
 import java.util.Arrays;
+import java.util.NoSuchElementException;
 
 public class MyLinkedList<E> implements MyList<E> {
     private Node<E> head, tail;
@@ -27,14 +29,18 @@ public class MyLinkedList<E> implements MyList<E> {
      * Return the head element in the list
      */
     public E getFirst() {
-        return size == 0 ? null : head.element;
+        if (size != 0)
+            return head.element;
+        throw new NoSuchElementException("List is empty");
     }
 
     /**
      * Return the last element in the list
      */
     public E getLast() {
-        return size == 0 ? null : tail.element;
+        if (size != 0)
+            return tail.element;
+        throw new NoSuchElementException("List is empty");
     }
 
     /**
@@ -76,8 +82,10 @@ public class MyLinkedList<E> implements MyList<E> {
      */
     @Override
     public void add(int index, E e) {
+        if (index < 0 || index > size)
+            throw new IndexOutOfBoundsException("Invalid index: " + index);
         if (index == 0) addFirst(e); // Insert first
-        else if (index >= size) addLast(e); // Insert last
+        else if (index == size) addLast(e); // Insert last
         else { // Insert in the middle
             Node<E> current = head;
             for (int i = 1; i < index; i++)
@@ -161,8 +169,10 @@ public class MyLinkedList<E> implements MyList<E> {
             assert current != null;
             result.append(current.element);
             current = current.next;
-            result.append(current != null ? ", " : "]");
+            if (current != null)
+                result.append(", ");
         }
+        result.append("]");
         return result.toString();
     }
 
@@ -290,6 +300,7 @@ public class MyLinkedList<E> implements MyList<E> {
     private class LinkedListIterator
             implements java.util.Iterator<E> {
         private Node<E> current = head; // Current index
+        private int position = 0;
 
         @Override
         public boolean hasNext() {
@@ -298,14 +309,19 @@ public class MyLinkedList<E> implements MyList<E> {
 
         @Override
         public E next() {
+            if (current == null)
+                throw new NoSuchElementException("All elements have been showed.");
             E e = current.element;
+            ++position;
             current = current.next;
             return e;
         }
 
         @Override
         public void remove() {
-            // Left as an exercise
+            if (position == 0) // next() has not been called yet
+                throw new IllegalStateException();
+            MyLinkedList.this.remove(--position);
         }
     }
 }
