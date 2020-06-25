@@ -3,6 +3,7 @@ package com.d9nich.exercise15;
 import com.d9nich.exercise1.MyList;
 
 import java.util.Arrays;
+import java.util.NoSuchElementException;
 
 @SuppressWarnings({"unchecked", "unused"})
 public class MyArrayList<E> implements MyList<E> {
@@ -184,7 +185,9 @@ public class MyArrayList<E> implements MyList<E> {
 
         @Override
         public E next() {
+            if(hasNext())
             return data[current++];
+            throw new NoSuchElementException("MyArrayList has no next element");
         }
 
         @Override // Remove the element returned by the last next()
