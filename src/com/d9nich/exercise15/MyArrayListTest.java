@@ -101,6 +101,7 @@ class MyArrayListTest {
         assertTrue(iterator.hasNext());
         assertEquals(1, iterator.next());
         iterator.remove();
+        assertEquals(1, emptyArrayList.size());
         assertTrue(iterator.hasNext());
         assertEquals(2, iterator.next());
         assertThrows(NoSuchElementException.class, iterator::next);
